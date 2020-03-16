@@ -1,0 +1,22 @@
+OPEN Animals FOR READ //Animals is an existing file
+OPEN NewAnimals FOR WRITE //NewAnimals is a new file
+INPUT NewAnimal //this is a record input by the user
+PositionFound ← FALSE
+REPEAT 
+  FILEREAD ANIMALS //reads the next record in file including AnimalName (key)
+  IF NewAnimal < AnimalName
+    THEN
+      PositionFound ← TRUE
+      INPUT NewAnimal2 //input other new record data 
+      FILEWRITE NewAnimals,NewAnimal2 //write new record from Animals to NewAnimals
+      FILEWRITE NewAnimals,NewAnimal //write current record from Animals to NewAnimals
+    ELSE
+      FILEWRITE NewAnimals,NewAnimal //write current record to NewAnimals
+  ENDIF
+UNTIL PositionFound = TRUE
+
+//now write all the remaining records from Animals to NewAnimals
+WHILE NOT EOF(Animals)
+  FILEREAD Animals //read the next Animal record
+  FILEWRITE NewAnimals//write this record to NewAnimals
+ENDWHILE
